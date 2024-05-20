@@ -1,0 +1,23 @@
+spring:
+  config:
+    import:
+      - "mysql.yml"
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mysql_endpoint}:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: ${mysql_username}
+    password: ${mysql_password}
+
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update #update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true # 터미널에 SQL문 표시
+        use_sql_comments: true
+    open-in-view: false

@@ -1,0 +1,3 @@
+mysql_endpoint: localhost
+mysql_username: root
+mysql_password: root
