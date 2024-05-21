@@ -31,3 +31,11 @@ public class Board {
         this.content = content;
     }
 }
+
+//의도를 몰라서 Setter 금지
+// 1. 초기화 용도
+// 2. 업데이트 용도
+//board.set~~~()
+// 생성 직후 초기화인가? 아니면 업데이트 하고싶은건가? 뭐지?
+
+

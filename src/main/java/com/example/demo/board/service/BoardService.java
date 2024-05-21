@@ -29,6 +29,31 @@ import org.springframework.stereotype.Service;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    // deleteSchedule이란 api를 만들었어
+    // 얘는, 세션 정보(sid)랑, 지울 일정 번호를 받아 컨트롤러에서
+
+    //컨트롤러에서, sid를 가지고 로그인 된 유저인지 검사하겠지?
+    // 세션스토리지에 있네? -> 통과.
+
+    // service.deleteSchedule(user, targetScheduleId);// 현재 로그인된 유저, 지울 일정 번호
+
+    // scheduleRespository.findByUserAndId(user, scheduleId); =>
+    //DB에서, 현재 유저가 썼으며, && 일정 번호가 id인걸 찾는거야
+
+    // 만약 현재 유저가 만든 일정이 아니라면? DB에 없겠지 당연하게
+    // throw new RuntimeException("니가만든 일정 아님");
+    // Primary Key
+
+
+    // Controller
+
+    // Service
+
+    // Repository
+
+    // Database
+
+
 
 
     public void createBoard(String title, String content) {
@@ -36,7 +61,6 @@ public class BoardService {
         // 우리가 DB 표를 대신하는 역할이 클래스로 Domain이였어
         // DB엔 표처럼 데이터가 저장되지만, 그거 한 줄 한 줄을 Domain class로 표현해
         // 우리가 디비에 데이터를 넣든, 꺼내오든, 실제 db의 표형태가 아니라, 엔티티(도메인)에 담아서 넣고 빼고 하는 것
-
         Board board = Board.builder().title(title).content(content).build(); //파라미터로 받은 title, content를 가지고 도메인 클래스로 바꿔줌
         boardRepository.save(board); // Repository는 DB랑 소통하는 친구니까, 얘를 통해서 DB에 저장함
     }
@@ -47,20 +71,19 @@ public class BoardService {
         return board;
     }
 
-    public void updateBoard(Long id , String title, String content) { //어던 게시글 업데이트 하는지 알아야하니까
-        Board board = getBoard(id); // DB에서 뽑아온 친구
-        //그러면 스프링이 이 값을 기억하고 있어 뽑아올 때
-        //근데 이 updateBoard 함수가 끝났는데, 값이 달라졌다? DB에 자동으로 업데이트를 해
-        board.updateBoard(title, content);
-        // 얘는 업데이트인데 디비에 아무것도 안하네? Repository 가지고 update 안하네?
-        // 스프링에는 변경 감지를 해줘
-        // 디비에서 가져온 애의 필드를 바꾸면, 자동으로 스프링이 업데이트 쿼리를 디비에 날려줘
-        // 그래서 값만바꿔줘도 업데이트가 이루어져
-    }
-
     public void deleteBoard(Long id) {
         Board board = getBoard(id);
         boardRepository.delete(board);
+    }
+
+    public void updateBoard(Long id, String title, String content) {
+        Board board = boardRepository.findById(id).get();
+        board.updateBoard(title, content);
+
+        //JPA에는, 변경 감지가 있어
+        //조회(findBy) 시점의 도메인 내부 값이랑, 이 메서드가 끝날때 값이랑 다르면
+        //자동으로 DB에 업데이트를해. 따라서 Repository를 거치지 않아
+
     }
 
 }
